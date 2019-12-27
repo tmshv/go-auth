@@ -42,6 +42,7 @@ type Opts struct {
 	SecureCookies  bool                // makes jwt cookie secure
 	TokenDuration  time.Duration       // token's TTL, refreshed automatically
 	CookieDuration time.Duration       // cookie's TTL. This cookie stores JWT token
+	CookieDomain   string              // cookis's Domain for JWT token
 
 	DisableXSRF bool // disable XSRF protection, useful for testing/debugging
 	DisableIAT  bool // disable IssuedAt claim
@@ -98,6 +99,7 @@ func NewService(opts Opts) (res *Service) {
 		SecureCookies:  opts.SecureCookies,
 		TokenDuration:  opts.TokenDuration,
 		CookieDuration: opts.CookieDuration,
+		CookieDomain:   opts.CookieDomain,
 		DisableXSRF:    opts.DisableXSRF,
 		DisableIAT:     opts.DisableIAT,
 		JWTCookieName:  opts.JWTCookieName,

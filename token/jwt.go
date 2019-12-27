@@ -55,6 +55,7 @@ type Opts struct {
 	SecureCookies  bool
 	TokenDuration  time.Duration
 	CookieDuration time.Duration
+	CookieDomain   string
 	DisableXSRF    bool
 	DisableIAT     bool // disable IssuedAt claim
 	// optional (custom) names for cookies and headers
@@ -204,11 +205,11 @@ func (j *Service) Set(w http.ResponseWriter, claims Claims) (Claims, error) {
 	}
 
 	jwtCookie := http.Cookie{Name: j.JWTCookieName, Value: tokenString, HttpOnly: true, Path: "/",
-		MaxAge: cookieExpiration, Secure: j.SecureCookies}
+		MaxAge: cookieExpiration, Secure: j.SecureCookies, Domain: j.CookieDomain}
 	http.SetCookie(w, &jwtCookie)
 
 	xsrfCookie := http.Cookie{Name: j.XSRFCookieName, Value: claims.Id, HttpOnly: false, Path: "/",
-		MaxAge: cookieExpiration, Secure: j.SecureCookies}
+		MaxAge: cookieExpiration, Secure: j.SecureCookies, Domain: j.CookieDomain}
 	http.SetCookie(w, &xsrfCookie)
 
 	return claims, nil
